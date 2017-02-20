@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tat.zhifzgl.luti.mapper.PiCiMapper">
+    <resultMap id="piciMap" type="PiCi">
+        <id column="pici_id" property="id"/>
+        <result column="xuexiao_mingcheng" property="xueXiao"/>
+        <result column="kemu_mingcheng" property="keMu"/>
+        <result column="jiaoshi_xingming" property="fuZeJiaoShi"/>
+        <result column="pici_lutipihao" property="luTiPiHao"/>
+        <result column="pici_wenjianshuliang" property="wenJianShuLiang"/>
+        <result column="pici_lutishuoming" property="luTiShuoMing"/>
+        <result column="pici_kaishishijian" property="kaiShiShiJian"/>
+        <result column="pici_jiezhishijian" property="jieZhiShiJian"/>
+        <result column="pici_zhuangtai" property="zhuangTai"/>
+        <result column="pici_beizhu" property="beiZhu"/>
+        <result column="xuexiao_id" property="xueXiaoId"/>
+        <result column="jiaoshi_id" property="jiaoShiId"/>
+        <result column="kemu_id" property="keMuId"/>
+    </resultMap>
+    <insert id="insertPICi" useGeneratedKeys="true" keyProperty="id">
+          INSERT INTO pici VALUES (null,#{xueXiao},#{keMu}, #{fuZeJiaoShi}, #{luTiPiHao},#{wenJianShuLiang},#{luTiShuoMing},#{kaiShiShiJian},#{jieZhiShiJian},#{zhuangTai},#{beiZhu})
+    </insert>
+    <select id="selectPiCis" resultMap="piciMap">
+        SELECT
+        pc.pici_id,
+        xx.xuexiao_mingcheng,
+        km.kemu_mingcheng,
+        js.jiaoshi_xingming,
+        pc.pici_lutipihao,
+        pc.pici_wenjianshuliang,
+        pc.pici_lutishuoming,
+        pc.pici_kaishishijian,
+        pc.pici_jiezhishijian,
+        pc.pici_zhuangtai,
+        pc.pici_beizhu,
+        pc.xuexiao_id,pc.jiaoshi_id,pc.kemu_id
+        FROM
+        pici pc ,
+        xuexiao xx ,
+        kemu km,
+        jiaoshi js
+        WHERE pc.xuexiao_id = xx.xuexiao_id AND
+        pc.kemu_id = km.kemu_id AND pc.jiaoshi_id = js.jiaoshi_id
+        <if test='id != null and id != ""'>
+            AND pc.pici_id = #{id}
+        </if>
+        <if test='xueXiao != null and xueXiao != ""'>
+            AND xx.xuexiao_id = #{xueXiao}
+        </if>
+        <if test='fuZeJiaoShi != null and fuZeJiaoShi != ""'>
+            AND js.jiaoshi_id = #{fuZeJiaoShi}
+        </if>
+        <if test='keMu != null and keMu != ""'>
+            AND km.kemu_id = #{keMu}
+        </if>
+    </select>
+    <update id="updatePiCi" useGeneratedKeys="true" keyProperty="id">
+          UPDATE pici
+          SET
+           xuexiao_id = #{xueXiaoId},
+           kemu_id = #{keMuId},
+           jiaoshi_id = #{jiaoShiId},
+           pici_lutipihao = #{luTiPiHao},
+           pici_wenjianshuliang = #{wenJianShuLiang},
+           pici_lutishuoming = #{luTiShuoMing},
+           pici_kaishishijian = #{kaiShiShiJian},
+           pici_jiezhishijian = #{jieZhiShiJian},
+           pici_zhuangtai = #{zhuangTai},
+           pici_beizhu = #{beiZhu}
+          WHERE  pici_id = #{id}
+    </update>
+
+    <delete id="deletePiCi">
+        DELETE FROM pici WHERE pici_id = #{id}
+    </delete>
+</mapper>

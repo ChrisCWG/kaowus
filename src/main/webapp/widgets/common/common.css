@@ -1,0 +1,15 @@
+.myHide {
+    display: none;
+}
+
+.table_th {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+@media (max-width:900px) {
+    .max_hide {
+        display: none;
+    }
+}

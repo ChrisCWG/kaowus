@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security.xsd">
+    <http security="none" pattern="/js/favicon.ico"/>
+    <http security="none" pattern="/common/login.jsp"/>
+    <http security="none" pattern="/**/*.js"/>
+    <http security="none" pattern="/**/*.css"/>
+    <http security="none" pattern="/**/*.jpg"/>
+    <http security="none" pattern="/**/*.gif"/>
+    <http security="none" pattern="/**/*.png"/>
+    <http auto-config='true'  servlet-api-provision="false" >
+        <!--<http-basic />-->
+        <intercept-url pattern="/**" access="ROLE_ADMIN"/>
+
+        <form-login login-page="/common/login.jsp" username-parameter="username" password-parameter="password"/>
+        <logout logout-success-url="/common/login.jsp" />
+
+        <session-management session-fixation-protection="none"/>
+
+        <session-management>
+            <concurrency-control/>
+        </session-management>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <password-encoder hash="md5">
+                <salt-source user-property="username"/>
+            </password-encoder>
+            <user-service>
+                <user name="admin" password="5b999b60581cdc2b1d98125f193b1304" authorities="ROLE_USER, ROLE_ADMIN" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>

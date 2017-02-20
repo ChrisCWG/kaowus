@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tat.zhifzgl.kaowu.mapper.KaoWuMapper">
+    <resultMap id="kaoWuMap" type="KaoWu">
+        <id column="kaowu_id" property="id"/>
+        <result column="kaowu_code" property="code"/>
+        <result column="xueqi_mingcheng" property="xueQi"/>
+        <result column="xuexiao_mingcheng" property="xueXiao"/>
+        <result column="kemu_mingcheng" property="keMu"/>
+        <result column="jiaoshi_xingming" property="fuZeJiaoShi"/>
+        <result column="kaowu_kaoshi" property="kaoShi"/>
+        <result column="jiaoshi_id" property="jiaoshi_id"/>
+        <result column="xuexiao_id" property="xuexiao_id"/>
+        <result column="xueqi_id" property="xueqi_id"/>
+        <result column="kemu_id" property="kemu_id"/>
+        <result column="kaowu_zhuangtai" property="zhuangTai"/>
+        <result column="kaowu_shijian" property="shiJian"/>
+        <result column="kaowu_renshu" property="renShu"/>
+        <result column="kaowu_kaochang" property="kaoChang"/>
+        <result column="kaowu_zhuguanti" property="zhuGuanTi"/>
+        <result column="kaowu_dianzhenbi" property="dianZhenBi"/>
+        <result column="kaowu_datizhi" property="daTiZhi"/>
+        <result column="kaowu_kaochangbushu" property="kaoChangBuShu"/>
+        <result column="kaowu_zhishidagang" property="zhiShiDaGang"/>
+        <result column="kaowu_timu" property="tiMu"/>
+        <result column="kaowu_shijuan" property="shiJuan"/>
+        <result column="kaowu_kaoshengxinxi" property="kaoShengXinXi"/>
+        <result column="kaowu_canyujiaoshi" property="canYuJiaoShi"/>
+        <result column="kaowu_jindu" property="jinDu"/>
+        <result column="kaowu_baoming" property="baoMing"/>
+        <result column="kaowu_changci" property="changCi"/>
+        <result column="kaowu_beizhu" property="beiZhu"/>
+        <result column="jiaoshi_shoujihaoma" property="jiaoshishoujihao"/>
+    </resultMap>
+    <select id="getKaoWuById" resultMap="kaoWuMap">
+        SELECT
+          kw.kaowu_id,
+          kw.kaowu_code,
+          xq.xueqi_mingcheng,
+          xx.xuexiao_mingcheng,
+          km.kemu_mingcheng,
+          js.jiaoshi_xingming,
+          kw.kaowu_kaoshi,
+          kw.kaowu_zhuangtai,
+          kw.kaowu_shijian,
+          kw.kaowu_renshu ,
+          kw.kaowu_kaochang ,
+          kw.kaowu_zhuguanti ,
+          kw.kaowu_dianzhenbi ,
+          kw.kaowu_datizhi,
+          kw.kaowu_kaochangbushu ,
+          kw.kaowu_zhishidagang ,
+          kw.kaowu_timu ,
+          kw.kaowu_shijuan,
+          kw.kaowu_kaoshengxinxi,
+          kw.kaowu_canyujiaoshi ,
+          kw.kaowu_jindu ,
+          kw.kaowu_changci ,
+          kw.kaowu_baoming ,
+          kw.kaowu_beizhu,kw.xuexiao_id,kw.jiaoshi_id,kw.kemu_id,kw.xueqi_id
+        FROM kaowu kw,xueqi xq,xuexiao xx,kemu km,jiaoshi js
+        WHERE
+          kw.jiaoshi_id = js.jiaoshi_id AND
+          kw.xueqi_id = xq.xueqi_id AND
+          kw.xuexiao_id = xx.xuexiao_id AND
+          kw.kemu_id = km.kemu_id AND
+          kw.kaowu_id = #{id}
+    </select>
+    <select id="getKaoWuByIds" resultMap="kaoWuMap">
+        SELECT
+          kw.kaowu_id,
+          kw.kaowu_code,
+          xx.xuexiao_mingcheng,
+          km.kemu_mingcheng,
+          js.jiaoshi_xingming,
+          kw.kaowu_kaoshi,
+          kw.kaowu_zhuangtai,
+          kw.kaowu_shijian,
+        js.jiaoshi_shoujihaoma
+        FROM kaowu kw,xueqi xq,xuexiao xx,kemu km,jiaoshi js
+        WHERE
+          kw.jiaoshi_id = js.jiaoshi_id AND
+          kw.xueqi_id = xq.xueqi_id AND
+          kw.xuexiao_id = xx.xuexiao_id AND
+          kw.kemu_id = km.kemu_id
+        <if test='xueQi.id != null and xueQi.id != ""'>
+            AND
+            xq.xueqi_id = ${xueQi.id}
+        </if>
+        <if test='ids != null and ids !="" '>
+            AND kw.xuexiao_id in
+            <foreach collection="ids" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    <insert id="insertKaoWu" useGeneratedKeys="true" keyProperty="id" >
+      INSERT INTO kaowu VALUES (
+      null,#{code},#{xueqi_id},#{xuexiao_id},
+      #{kemu_id},#{kaoShi},#{zhuangTai},#{shiJian},#{renShu},
+      #{kaoChang},#{changCi},#{tiMu},#{zhuGuanTi},#{dianZhenBi},
+      #{daTiZhi},#{baoMing},#{shiJuan},#{jinDu},#{kaoChangBuShu},
+      #{zhiShiDaGang},#{kaoShengXinXi},#{canYuJiaoShi},#{beiZhu},#{jiaoshi_id})
+    </insert>
+    <update id="updateKaoWu" useGeneratedKeys="true" keyProperty="id">
+        UPDATE kaowu SET kaowu_code = #{code},xueqi_id = #{xueqi_id},xuexiao_id = #{xuexiao_id},
+      kemu_id = #{kemu_id},kaowu_zhuangtai = #{zhuangTai},kaowu_kaoshi = #{kaoShi},kaowu_shijuan = #{shiJian},kaowu_renshu = #{renShu},
+      kaowu_kaochang = #{kaoChang},kaowu_changci = #{changCi},kaowu_timu = #{tiMu},kaowu_zhuguanti = #{zhuGuanTi},kaowu_dianzhenbi = #{dianZhenBi},
+      kaowu_datizhi = #{daTiZhi},kaowu_baoming = #{baoMing},kaowu_shijuan = #{shiJuan},kaowu_jindu = #{jinDu},kaowu_kaochangbushu = #{kaoChangBuShu},
+      kaowu_zhishidagang = #{zhiShiDaGang},kaowu_kaoshengxinxi = #{kaoShengXinXi},kaowu_canyujiaoshi = #{canYuJiaoShi},kaowu_beizhu = #{beiZhu},jiaoshi_id = #{jiaoshi_id}
+      WHERE kaowu_id = #{id}
+    </update>
+    <delete id="deleteKaoWu" >
+        DELETE FROM kaowu WHERE kaowu_id = #{id}
+    </delete>
+</mapper>

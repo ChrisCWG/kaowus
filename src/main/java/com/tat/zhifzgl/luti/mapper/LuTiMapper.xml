@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tat.zhifzgl.luti.mapper.LuTiMapper">
+    <resultMap id="lutiMap" type="LuTi">
+        <id column="luti_id" property="id"/>
+        <result column="pici_id" property="pici_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="pici_lutipihao" property="luTiPiHao"/>
+        <result column="userName" property="luTiRen"/>
+        <result column="luti_wenJianMing" property="wenJianMing"/>
+        <result column="luti_timushuliang" property="tiMuShuLiang"/>
+        <result column="luti_jindu" property="jinDu"/>
+        <result column="luti_beizhu" property="beiZhu"/>
+        <result column="xuexiao_mingcheng" property="xueXiaoMingCheng"/>
+        <result column="pici_jiezhishijian" property="jieZhiShiJian"/>
+    </resultMap>
+    <insert id="insertLuTi" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO luti VALUES(null,#{pici_id},#{user_id},#{wenJianMing},#{tiMuShuLiang},#{jinDu},#{beiZhu})
+    </insert>
+    <select id="selectLuTis" resultMap="lutiMap">
+        SELECT
+        lt.luti_id,
+        lt.pici_id,
+        pc.pici_lutipihao,
+        lt.user_id,
+        u.userName,
+        lt.luti_wenjianming,
+        lt.luti_timushuliang,
+        lt.luti_jindu,
+        lt.luti_beizhu,
+        xx.xuexiao_mingcheng,
+        pc.pici_jiezhishijian
+        FROM
+        luti lt ,pici pc , users u,xuexiao xx
+        WHERE
+        lt.pici_id = pc.pici_id AND lt.user_id = u.user_id AND pc.xuexiao_id = xx.xuexiao_id
+        <if test='id != null and id != "" and id != 0'>
+            AND lt.luti_id = #{id}
+        </if>
+        <if test='pici_id != null and pici_id != ""'>
+            AND lt.pici_id = #{pici_id}
+        </if>
+        <if test='user_id != null and user_id != ""'>
+            AND lt.user_id = #{user_id}
+        </if>
+    </select>
+    <update id="updateLuTi" useGeneratedKeys="true" keyProperty="id">
+        update luti set
+          pici_id = #{pici_id},
+          user_id = #{user_id},
+          luti_wenjianming = #{wenJianMing},
+          luti_timushuliang = #{tiMuShuLiang},
+          luti_jindu = #{jinDu},
+          luti_beizhu = #{beiZhu}
+        where luti_id = #{id} ;
+    </update>
+    <delete id="deleteLuTi">
+        DELETE FROM luti WHERE luti_id = #{id}
+    </delete>
+</mapper>

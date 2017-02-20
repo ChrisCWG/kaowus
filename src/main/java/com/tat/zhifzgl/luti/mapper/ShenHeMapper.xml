@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tat.zhifzgl.luti.mapper.ShenHeMapper">
+    <resultMap id="shenheMap" type="ShenHe">
+        <id column="shenhe_id" property="id"/>
+        <result column="luti_id" property="luti_id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="shenhe_shenhejindu" property="shenHeJinDu"/>
+        <result column="shenhe_xiugaijilu" property="xiuGaiJiLu"/>
+        <result column="shenhe_xiugaishuliang" property="xiuGaiShuLiang"/>
+        <result column="shenhe_beizhu" property="beiZhu"/>
+        <result column="pici_lutipihao" property="luTiPiHao"/>
+        <result column="userName" property="shenHeRen"/>
+        <result column="lutiren_id" property="luTiRen_ID"/>
+        <result column="pici_id" property="pici_id"/>
+    </resultMap>
+    <insert id="insertShenHe" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO shenhe VALUES (null,#{luti_id},#{user_id},#{shenHeJinDu},#{xiuGaiJiLu},#{xiuGaiShuLiang},#{beiZhu})
+    </insert>
+    <select id="selectShenHe" resultMap="shenheMap">
+        SELECT
+        sh.shenhe_id,
+        sh.user_id,
+        sh.luti_id,
+        sh.shenhe_shenhejindu,
+        sh.shenhe_xiugaijilu,
+        sh.shenhe_xiugaishuliang,
+        sh.shenhe_beizhu,
+        u.userName,
+        pc.pici_lutipihao,
+        lt.user_id AS lutiren_id,
+        pc.pici_id
+        FROM shenhe sh,luti lt,users u,pici pc
+        WHERE
+        sh.luti_id = lt.luti_id AND
+        sh.user_id = u.user_id AND lt.pici_id = pc.pici_id
+        <if test='pici_id != null and pici_id != ""'>
+            AND pc.pici_id = #{pici_id}
+        </if>
+        <if test='user_id != null and user_id != ""'>
+            AND u.user_id = #{user_id}
+        </if>
+        <if test='id != null and id != ""'>
+            AND sh.shenhe_id = #{id}
+        </if>
+    </select>
+    <update id="updateShenHe" useGeneratedKeys="true" keyProperty="id">
+        UPDATE shenhe
+        SET
+        luti_id = #{luti_id},
+        user_id = #{user_id},
+        shenhe_shenhejindu = #{shenHeJinDu},
+        shenhe_xiugaijilu = #{xiuGaiJiLu},
+        shenhe_xiugaishuliang = #{xiuGaiShuLiang},
+        shenhe_beizhu = #{beiZhu}
+        WHERE
+        shenhe_id = #{id}
+    </update>
+    <delete id="deleteShenHe">
+        DELETE FROM  shenhe WHERE shenhe_id = #{id}
+    </delete>
+</mapper>

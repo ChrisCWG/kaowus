@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 配置别名 -->
+    <typeAliases>
+        <package name="com.tat.zhifzgl.kaowu.pojo"/>
+        <package name="com.tat.zhifzgl.common.pojo"/>
+        <package name="com.tat.zhifzgl.luti.pojo"/>
+        <package name="com.tat.zhifzgl.user.pojo"/>
+    </typeAliases>
+</configuration>

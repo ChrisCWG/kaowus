@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tat.zhifzgl.common.mapper.JiaoShiMapper">
+    <resultMap id="jiaoShiMap" type="JiaoShi">
+        <id column="jiaoshi_id" property="id"/>
+        <result column="jiaoshi_xingming" property="xingMing"/>
+        <result column="jiaoshi_shoujihaoma" property="shouJiHaoMa"/>
+        <result column="xuexiao_id" property="xuexiao_id"/>
+    </resultMap>
+
+    <select id="getAllJiaoShiByXueXiaoId" resultMap="jiaoShiMap">
+        SELECT
+        js.jiaoshi_id,
+        js.jiaoshi_xingming,
+        js.jiaoshi_shoujihaoma
+        FROM jiaoshi js
+        WHERE
+        js.xuexiao_id = #{id}
+    </select>
+    <select id="getAllJiaoShiById" resultMap="jiaoShiMap">
+        SELECT
+        js.jiaoshi_id,
+        js.jiaoshi_xingming,
+        js.jiaoshi_shoujihaoma
+        FROM jiaoshi js
+        <if test="id != null">
+            WHERE js.jiaoshi_id = #{id}
+        </if>
+        ORDER BY js.jiaoshi_xingming DESC
+    </select>
+    <select id="selectJiaoShiDoPiCi" resultMap="jiaoShiMap">
+        SELECT
+        js.jiaoshi_id,js.jiaoshi_xingming
+        FROM  pici pc ,xuexiao xx , kemu km,jiaoshi js
+        WHERE
+        pc.xuexiao_id  = xx.xuexiao_id AND
+        pc.kemu_id = km.kemu_id AND
+        pc.jiaoshi_id = js.jiaoshi_id
+        GROUP BY js.jiaoshi_id
+    </select>
+    <insert id="insertJiaoShi" useGeneratedKeys="true" keyProperty="id">
+        INSERT  INTO  jiaoshi VALUES (null,#{xingMing},#{shouJiHaoMa},#{xuexiao_id})
+    </insert>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tat.zhifzgl.common.mapper.KeMuMapper">
+    <resultMap id="keMuMap" type="KeMu">
+        <id column="kemu_id" property="id"/>
+        <result column="kemu_mingcheng" property="mingCheng"/>
+    </resultMap>
+
+    <select id="getAllKeMuByJiaoShiId" resultMap="keMuMap" >
+        SELECT km.kemu_id,km.kemu_mingcheng FROM
+          kemu km ,
+          jiaoshi js,
+          jiaoshi_kemu jk
+        WHERE
+            km.kemu_id = jk.kemu_id AND
+            jk.jiaoshi_id =  js.jiaoshi_id AND
+            js.jiaoshi_id = #{id}
+    </select>
+    <select id="selectKeMuById" resultMap="keMuMap" >
+        SELECT km.kemu_id,km.kemu_mingcheng FROM
+        kemu km
+        <if test="id != null">
+            WHERE km.kemu_id = #{id}
+        </if>
+        ORDER BY km.kemu_mingcheng DESC
+    </select>
+    <select id="selectKeMuDoPiCi" resultMap="keMuMap">
+        SELECT
+        km.kemu_id,km.kemu_mingcheng
+        FROM  pici pc ,xuexiao xx , kemu km,jiaoshi js
+        WHERE
+        pc.xuexiao_id  = xx.xuexiao_id AND
+        pc.kemu_id = km.kemu_id AND
+        pc.jiaoshi_id = js.jiaoshi_id
+        GROUP BY km.kemu_id
+    </select>
+    <insert id="insertKeMu" useGeneratedKeys="true" keyProperty="id" >
+          INSERT INTO kemu VALUES (null,#{mingCheng})
+    </insert>
+</mapper>
